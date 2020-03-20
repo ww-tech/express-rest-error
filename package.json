@@ -1,0 +1,36 @@
+{
+  "name": "express-rest-error",
+  "version": "1.0.0",
+  "description": "Clean error throwing/handling for Express REST apps",
+  "main": "dist/index.js",
+  "module": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "babel src -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/will123195/express-rest-error.git"
+  },
+  "keywords": [
+    "express",
+    "rest",
+    "error",
+    "handling"
+  ],
+  "author": "will123195",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/will123195/express-rest-error/issues"
+  },
+  "homepage": "https://github.com/will123195/express-rest-error#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "express": "^4.17.1",
+    "jest": "^25.1.0",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {}
+}

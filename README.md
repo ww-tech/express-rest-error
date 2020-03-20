@@ -5,7 +5,7 @@ Clean error throwing/handling for Express REST apps using the [Service layer pat
 ## Install
 
 ```
-npm i -S @ww-tech/express-rest-error
+npm i -S express-rest-error
 ```
 
 ## Example
