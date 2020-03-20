@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/will123195/express-rest-error.git"
+    "url": "git+https://github.com/ww-tech/express-rest-error.git"
   },
   "keywords": [
     "express",
@@ -21,9 +21,9 @@
   "author": "will123195",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/will123195/express-rest-error/issues"
+    "url": "https://github.com/ww-tech/express-rest-error/issues"
   },
-  "homepage": "https://github.com/will123195/express-rest-error#readme",
+  "homepage": "https://github.com/ww-tech/express-rest-error#readme",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.7",
