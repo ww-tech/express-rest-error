@@ -1,4 +1,4 @@
-# @ww-tech/express-rest-error
+# express-rest-error
 
 Clean error throwing/handling for Express REST apps using the [Service layer pattern](https://en.wikipedia.org/wiki/Service_layer_pattern)
 
