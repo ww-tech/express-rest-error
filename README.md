@@ -11,7 +11,7 @@ npm i -S express-rest-error
 ## Example
 
 ```js
-import { validationError, errorHandler } from '@ww-tech/express-rest-error'
+import { validationError, errorHandler } from 'express-rest-error'
 import express from 'express'
 
 const app = express()
@@ -22,8 +22,12 @@ async function helloService(name) {
 }
 
 app.get('/hello', async (req, res, next) => {
-  const result = await helloService(req.query.name).catch(next)
-  res.json({ result })
+  try {
+    const result = await helloService(req.query.name)
+    res.json({ result })
+  } catch (err) {
+    next(err)
+  }
 })
 
 app.use(errorHandler({ debug: true }))
