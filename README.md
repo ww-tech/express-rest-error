@@ -58,7 +58,7 @@ You may throw any of the following types of errors with an optional error `messa
 - Sets the response status code to `404`. 
 
 
-### `throw customError( message, details )`
+### `throw customError( message, details, httpStatus )`
 
 - Appropriate for when custom errors are necessary
 
