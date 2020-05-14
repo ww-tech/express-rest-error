@@ -74,16 +74,15 @@ app.use(errorHandler({ debug: true }))
 
 ### Error Handler Options
 
-`debug` {Boolean} - (optional) returns debug output (stack trace, request data)
-`onError` {function} - (optional) callback function used to construct error object `{ message, details }`
+- `debug` {Boolean} - (optional) returns debug output (stack trace, request data)
+- `onError` {Function} - (optional) intercept error before sending to `errorHandler`; appropriate when complete control of error payload is preferred
 
 
 ```js
 app.use(errorHandler({ 
   debug: true,
-  onError: err => ({
-    message: err.message,
-    details: err.details
-  })  
+  onError: (error, errorPayload) => {
+    return error;
+  }  
 }))
 ```
