@@ -1,27 +1,29 @@
-// 400
-export const validationError = (message) => {
-  const err = new Error(message || 'Validation error.')
-  err.validationError = true
-  return err
+export const customError = (message, details) => {
+  const err = new Error(message);
+  err.details = details;
+  return err;
 }
 
-// 401
-export const authRequired = (message) => {
-  const err = new Error(message || 'Authentication required.')
-  err.authRequired = true
-  return err
+export const validationError = (message = 'Validation error.',  details) => {
+  const err = customError(message, details);
+  err.httpStatus = 400;
+  return err;
 }
 
-// 403
-export const accessDenied = (message) => {
-  const err = new Error(message || 'Access denied.')
-  err.accessDenied = true
-  return err
+export const authRequired = (message = 'Authentication required.', details) => {
+  const err = customError(message, details)
+  err.httpStatus = 401;
+  return err;
 }
 
-// 404
-export const notFound = (message) => {
-  const err = new Error(message || 'Not found.')
-  err.notFound = true
+export const accessDenied = (message = 'Access denied.', details) => {
+  const err = customError(message, details);
+  err.httpStatus = 403;
+  return err;
+}
+
+export const notFound = (message = 'Not found.', details) => {
+  const err = customError(message, details);
+  err.httpStatus = 404;
   return err
 }
