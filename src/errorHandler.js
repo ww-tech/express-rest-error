@@ -1,9 +1,12 @@
-export default ({ debug = false } = {}) => (err, req, res, next) => {
-  let statusCode = err.httpStatus || 500
-  const error = {
-    message: err.message,
-    details: err.details
-  }
+const defaultHandler = (err) => ({
+  message: err.message,
+  details: err.details
+});
+
+export default ({ debug = false, onError = defaultHandler } = {}) => (err, req, res, next) => {
+  const statusCode = err.httpStatus || 500
+  const error = onError(err)
+  
   let stack
   if (err.stack) {
     stack = err.stack.split('\n')
