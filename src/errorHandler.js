@@ -1,19 +1,8 @@
 export default ({ debug = false } = {}) => (err, req, res, next) => {
-  let statusCode = 500
-  if (err.validationError) {
-    statusCode = 400
-  }
-  if (err.authRequired) {
-    statusCode = 401
-  }
-  if (err.accessDenied) {
-    statusCode = 403
-  }
-  if (err.notFound) {
-    statusCode = 404
-  }
+  let statusCode = err.httpStatus || 500
   const error = {
-    message: err.message
+    message: err.message,
+    details: err.details
   }
   let stack
   if (err.stack) {
