@@ -81,8 +81,9 @@ app.use(errorHandler({ debug: true }))
 ```js
 app.use(errorHandler({
   debug: true,
-  onError: (error, originalError) => {
-    return error;
+  transform: ({ err, req, res, responseBody }) => {
+    res.setHeader('X-Warning', 'Stop sending bad requests.')
+    return responseBody;
   }
 }))
 ```

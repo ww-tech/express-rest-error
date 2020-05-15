@@ -1,12 +1,12 @@
-const defaultInterceptor = (err) => err;
+const defaultTransformer = ({ err, req, res, responseBody }) => responseBody;
 
-export default ({ debug = false, onError = defaultInterceptor } = {}) => (err, req, res, next) => {
+export default ({ debug = false, transform = defaultTransformer } = {}) => (err, req, res, next) => {
   const statusCode = err.httpStatus || 500
-  let error = {
+  let responseBody = {
     message: err.message,
     details: err.details
   }
-  
+
   let stack
   if (err.stack) {
     stack = err.stack.split('\n')
@@ -16,7 +16,7 @@ export default ({ debug = false, onError = defaultInterceptor } = {}) => (err, r
       .map(line => line.trim())
   }
   if (debug) {
-    error.debug = {
+    responseBody.debug = {
       stack,
       request: {
         method: req.method,
@@ -28,8 +28,8 @@ export default ({ debug = false, onError = defaultInterceptor } = {}) => (err, r
   }
   // body-parser error
   if (err.body) {
-    error.message = 'Could not parse JSON body.'
+    responseBody.message = 'Could not parse JSON body.'
   }
-  error = onError(error, err);
-  res.status(statusCode).json(error)
+  responseBody = transform({ err, req, res, responseBody });
+  res.status(statusCode).json(responseBody)
 }
