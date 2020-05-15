@@ -5,32 +5,22 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var defaultInterceptor = function defaultInterceptor(err) {
+  return err;
+};
+
 var _default = function _default() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       _ref$debug = _ref.debug,
-      debug = _ref$debug === void 0 ? false : _ref$debug;
+      debug = _ref$debug === void 0 ? false : _ref$debug,
+      _ref$onError = _ref.onError,
+      onError = _ref$onError === void 0 ? defaultInterceptor : _ref$onError;
 
   return function (err, req, res, next) {
-    var statusCode = 500;
-
-    if (err.validationError) {
-      statusCode = 400;
-    }
-
-    if (err.authRequired) {
-      statusCode = 401;
-    }
-
-    if (err.accessDenied) {
-      statusCode = 403;
-    }
-
-    if (err.notFound) {
-      statusCode = 404;
-    }
-
+    var statusCode = err.httpStatus || 500;
     var error = {
-      message: err.message
+      message: err.message,
+      details: err.details
     };
     var stack;
 
@@ -61,6 +51,7 @@ var _default = function _default() {
       error.message = 'Could not parse JSON body.';
     }
 
+    error = onError(error, err);
     res.status(statusCode).json(error);
   };
 };
