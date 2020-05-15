@@ -1,11 +1,11 @@
-const defaultHandler = (err) => ({
-  message: err.message,
-  details: err.details
-});
+const defaultInterceptor = (err) => err;
 
-export default ({ debug = false, onError = defaultHandler } = {}) => (err, req, res, next) => {
+export default ({ debug = false, onError = defaultInterceptor } = {}) => (err, req, res, next) => {
   const statusCode = err.httpStatus || 500
-  const error = onError(err)
+  let error = {
+    message: err.message,
+    details: err.details
+  }
   
   let stack
   if (err.stack) {
@@ -30,5 +30,6 @@ export default ({ debug = false, onError = defaultHandler } = {}) => (err, req, 
   if (err.body) {
     error.message = 'Could not parse JSON body.'
   }
+  error = onError(error, err);
   res.status(statusCode).json(error)
 }
