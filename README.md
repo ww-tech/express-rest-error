@@ -75,7 +75,7 @@ app.use(errorHandler({ debug: true }))
 ### Error Handler Options
 
 - `debug` {Boolean} - (optional) returns debug output (stack trace, request data)
-- `onError` {Function} - (optional) intercept error before sending to client
+- `transform` {Function} - (optional) intercept error before sending to client
 
 
 ```js
