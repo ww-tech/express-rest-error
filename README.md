@@ -40,22 +40,22 @@ You may throw any of the following types of errors with an optional error `messa
 ### `throw validationError( message, details )`
 
 - Appropriate for missing required fields or invalid input.
-- Sets the response status code to `400`. 
+- Sets the response status code to `400`.
 
 ### `throw authRequired( message, details )`
 
 - Appropriate when token or authentication is missing.
-- Sets the response status code to `401`. 
+- Sets the response status code to `401`.
 
-### `throw accessDenied( message, details )` 
+### `throw accessDenied( message, details )`
 
 - Appropriate when the user making the request does not have permission to the resource.
-- Sets the response status code to `403`. 
+- Sets the response status code to `403`.
 
 ### `throw notFound( message, details )`
 
 - Appropriate when the requested resource does not exist.
-- Sets the response status code to `404`. 
+- Sets the response status code to `404`.
 
 
 ### `throw customError( message, details, httpStatus )`
@@ -75,14 +75,14 @@ app.use(errorHandler({ debug: true }))
 ### Error Handler Options
 
 - `debug` {Boolean} - (optional) returns debug output (stack trace, request data)
-- `onError` {Function} - (optional) intercept error before sending to `errorHandler`; appropriate when complete control of error payload is preferred
+- `onError` {Function} - (optional) intercept error before sending to client
 
 
 ```js
-app.use(errorHandler({ 
+app.use(errorHandler({
   debug: true,
-  onError: (error, errorPayload) => {
+  onError: (error, originalError) => {
     return error;
-  }  
+  }
 }))
 ```
