@@ -12,18 +12,12 @@ const supertest = require('supertest')
 
 const app = express()
 const currentTime = Date.now();
-function teapotError() {
-  const err = customError("I'm a teapot");
-  err.httpStatus = 418;
-}
-
-function tooEarlyError() {
-  const err = customError("It is too early for errors", {
+const teapotError = () =>
+  customError("I'm a teapot", null, 418);
+const tooEarlyError = () =>
+  customError("It is too early for errors", {
     time: currentTime
-  });
-  err.httpStatus = 425;
-  return err;
-}
+  }, 425);
 
 app.get('/:test', (req, res, next) => {
   try {
@@ -111,7 +105,8 @@ test('GET error with details', done => {
     .get('/425')
     .expect(425)
     .expect(res => {
-      if (res.body.details.time !== currentTime) throw new Error('the error.details were not provided')
+      if (res.body.details.time !== currentTime)
+        throw new Error('the error.details were not provided')
     })
     .end(done)
 })
