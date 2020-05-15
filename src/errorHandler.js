@@ -1,20 +1,12 @@
-export default ({ debug = false } = {}) => (err, req, res, next) => {
-  let statusCode = 500
-  if (err.validationError) {
-    statusCode = 400
+const defaultTransformer = ({ err, req, res, responseBody }) => responseBody;
+
+export default ({ debug = false, transform = defaultTransformer } = {}) => (err, req, res, next) => {
+  const statusCode = err.httpStatus || 500
+  let responseBody = {
+    message: err.message,
+    details: err.details
   }
-  if (err.authRequired) {
-    statusCode = 401
-  }
-  if (err.accessDenied) {
-    statusCode = 403
-  }
-  if (err.notFound) {
-    statusCode = 404
-  }
-  const error = {
-    message: err.message
-  }
+
   let stack
   if (err.stack) {
     stack = err.stack.split('\n')
@@ -24,7 +16,7 @@ export default ({ debug = false } = {}) => (err, req, res, next) => {
       .map(line => line.trim())
   }
   if (debug) {
-    error.debug = {
+    responseBody.debug = {
       stack,
       request: {
         method: req.method,
@@ -36,7 +28,8 @@ export default ({ debug = false } = {}) => (err, req, res, next) => {
   }
   // body-parser error
   if (err.body) {
-    error.message = 'Could not parse JSON body.'
+    responseBody.message = 'Could not parse JSON body.'
   }
-  res.status(statusCode).json(error)
+  responseBody = transform({ err, req, res, responseBody });
+  res.status(statusCode).json(responseBody)
 }
