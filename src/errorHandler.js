@@ -1,21 +1,25 @@
 const defaultTransformer = ({ err, req, res, responseBody }) => responseBody;
 
 export default ({ debug = false, transform = defaultTransformer } = {}) => (err, req, res, next) => {
-  const statusCode = err.httpStatus || 500
   let responseBody = {
     message: err.message,
     details: err.details
   }
+  // body-parser error
+  if (err.body) {
+    responseBody.message = 'Could not parse JSON body.'
+  }
+  responseBody = transform({ err, req, res, responseBody });
 
-  let stack
-  if (err.stack) {
-    stack = err.stack.split('\n')
-    stack.shift()
+  const statusCode = err.httpStatus || 500;
+
+  if (err.stack && debug) {
+    let stack = err.stack.split('\n');
+    stack.shift();
     stack = stack
       .filter(line => line.indexOf('node_modules') === -1)
-      .map(line => line.trim())
-  }
-  if (debug) {
+      .map(line => line.trim());
+
     responseBody.debug = {
       stack,
       request: {
@@ -26,10 +30,6 @@ export default ({ debug = false, transform = defaultTransformer } = {}) => (err,
       statusCode
     }
   }
-  // body-parser error
-  if (err.body) {
-    responseBody.message = 'Could not parse JSON body.'
-  }
-  responseBody = transform({ err, req, res, responseBody });
+
   res.status(statusCode).json(responseBody)
 }
