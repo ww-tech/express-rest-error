@@ -26,11 +26,11 @@
   "homepage": "https://github.com/ww-tech/express-rest-error#readme",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
+    "@babel/compat-data": "^7.18.13",
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
     "express": "^4.17.1",
     "jest": "^25.1.0",
     "supertest": "^4.0.2"
-  },
-  "dependencies": {}
+  }
 }

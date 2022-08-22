@@ -21,35 +21,10 @@ var _default = function _default() {
       transform = _ref2$transform === void 0 ? defaultTransformer : _ref2$transform;
 
   return function (err, req, res, next) {
-    var statusCode = err.httpStatus || 500;
     var responseBody = {
       message: err.message,
       details: err.details
-    };
-    var stack;
-
-    if (err.stack) {
-      stack = err.stack.split('\n');
-      stack.shift();
-      stack = stack.filter(function (line) {
-        return line.indexOf('node_modules') === -1;
-      }).map(function (line) {
-        return line.trim();
-      });
-    }
-
-    if (debug) {
-      responseBody.debug = {
-        stack: stack,
-        request: {
-          method: req.method,
-          uri: req.originalUrl,
-          body: req.body
-        },
-        statusCode: statusCode
-      };
-    } // body-parser error
-
+    }; // body-parser error
 
     if (err.body) {
       responseBody.message = 'Could not parse JSON body.';
@@ -61,6 +36,27 @@ var _default = function _default() {
       res: res,
       responseBody: responseBody
     });
+    var statusCode = err.httpStatus || 500;
+
+    if (err.stack && debug) {
+      var stack = err.stack.split('\n');
+      stack.shift();
+      stack = stack.filter(function (line) {
+        return line.indexOf('node_modules') === -1;
+      }).map(function (line) {
+        return line.trim();
+      });
+      responseBody.debug = {
+        stack: stack,
+        request: {
+          method: req.method,
+          uri: req.originalUrl,
+          body: req.body
+        },
+        statusCode: statusCode
+      };
+    }
+
     res.status(statusCode).json(responseBody);
   };
 };
